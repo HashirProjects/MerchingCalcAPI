@@ -1,0 +1,1 @@
+This project was created to help me learn about APIs and may include some common errors since I am a beginner.
