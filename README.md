@@ -1,1 +1,2 @@
 This project was created to help me learn about APIs and may include some common errors since I am a beginner.
+Uses runelite api to find out which is the best item to merch currently using price difference and trade volume.
