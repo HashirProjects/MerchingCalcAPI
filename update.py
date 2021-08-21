@@ -6,13 +6,11 @@ class updater():
 		'User-Agent': 'GE price forcasting project',
 	}
 	URL = "https://prices.runescape.wiki/api/v1/osrs/1h"
-	def __init__(self):
-		self.largestDiffItem = [0,0]
 
 	def run(self):
 		self.dataSet = []
 
-		r = requests.get(self.URL, headers=headers)
+		r = requests.get(self.URL, headers=self.headers)
 		itemID = 0
 
 		for itemID in range(25849):
@@ -27,11 +25,9 @@ class updater():
 
 	def findBest(self):
 
-		for item in self.dataSet:
-			if item[0] > self.largestDiffItem[0] and item[0] < 100000:
-				self.largestDiffItem=item
+		sorted(self.dataSet, key=lambda x: x[0], reverse=True)
 
-		return self.largestDiffItem
+		return self.dataSet
 
 
 
