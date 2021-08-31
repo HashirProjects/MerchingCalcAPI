@@ -1,11 +1,15 @@
 import requests
 import threading
+import pickle
 
 class updater():
 	headers = {
 		'User-Agent': 'GE price forcasting project',
 	}
-	URL = "https://prices.runescape.wiki/api/v1/osrs/1h"
+	URL = "https://prices.runescape.wiki/api/v1/osrs/6h"
+	def __init__(self):
+		with open("itemList.txt" , "rb") as f:
+			self.itemList = pickle.load(f)
 
 	def run(self):
 		self.dataSet = []
@@ -13,19 +17,24 @@ class updater():
 		r = requests.get(self.URL, headers=self.headers)
 		itemID = 0
 
-		for itemID in range(25849):
+		for name, i, limit in self.itemList:
 
+			itemID = str(i)
 			try:
-				Currentpricediff = r.json()["data"][itemID]["avgHighPrice"] - r.json()["data"][itemID]["avgLowPrice"]
-				Currentpricediff = Currentpricediff * (r.json()["data"][itemID]["avgHighVolume"] - r.json()["data"][itemID]["avgLowVolume"])
+				score = r.json()["data"][itemID]["avgHighPrice"] - r.json()["data"][itemID]["avgLowPrice"]
+				score *= min([(r.json()["data"][itemID]["highPriceVolume"] - r.json()["data"][itemID]["lowPriceVolume"]),limit])
+				self.dataSet.append([score, name])
 
-				self.dataSet.append([Currentpricediff, itemID])
-			except:
+			except KeyError:
 				pass
 
-	def findBest(self):
+			except TypeError:
+				self.dataSet.append([0,name])
 
-		sorted(self.dataSet, key=lambda x: x[0], reverse=True)
+
+	def getData(self):
+
+		self.dataSet.sort(key=lambda x: x[0], reverse=True)
 
 		return self.dataSet
 
