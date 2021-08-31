@@ -17,7 +17,7 @@ def updateDB():
 class topItemsList(Resource):
 	def get(self):
 		with open("database.json", "r") as file:
-			response = file.read()
+			response = json.load(file)
 		return response
 
 	def patch(self):
