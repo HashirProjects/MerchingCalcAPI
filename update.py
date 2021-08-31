@@ -22,14 +22,19 @@ class updater():
 			itemID = str(i)
 			try:
 				score = r.json()["data"][itemID]["avgHighPrice"] - r.json()["data"][itemID]["avgLowPrice"]
-				score *= min([(r.json()["data"][itemID]["highPriceVolume"] - r.json()["data"][itemID]["lowPriceVolume"]),limit])
+
+				if score < 0:
+					score = 0
+				else:
+					score *= min([(r.json()["data"][itemID]["highPriceVolume"] - r.json()["data"][itemID]["lowPriceVolume"]),limit])
+
 				self.dataSet.append([score, name])
 
 			except KeyError:
 				pass
 
 			except TypeError:
-				self.dataSet.append([0,name])
+				self.dataSet.append([0,name + " (data missing)"])
 
 
 	def getData(self):

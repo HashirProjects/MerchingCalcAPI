@@ -20,11 +20,6 @@ class topItemsList(Resource):
 			response = json.load(file)
 		return response
 
-	def patch(self):
-		updateDB()
-
-		return {"message", "successfully updated list"}, 201
-
 
 api.add_resource(topItemsList, "/ItemScores")
 
@@ -34,7 +29,7 @@ if __name__ == "__main__":
 	def targetfunc():
 		while True:
 			updateDB()
-			time.sleep(3600)
+			time.sleep(21600)
 
 	update_thread = threading.Thread(target = targetfunc)
 	update_thread.start()
