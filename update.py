@@ -1,5 +1,4 @@
 import requests
-import threading
 import pickle
 
 class updater():
@@ -15,20 +14,22 @@ class updater():
 		self.dataSet = []
 
 		r = requests.get(self.URL, headers=self.headers)
-		itemID = 0
+		itemID = ""
 
 		for name, i, limit in self.itemList:
 
 			itemID = str(i)
-			try:
+			try:#filter using the avg low price
 				score = r.json()["data"][itemID]["avgHighPrice"] - r.json()["data"][itemID]["avgLowPrice"]
 
-				if score < 0:
-					score = 0
-				else:
-					score *= min([(r.json()["data"][itemID]["highPriceVolume"] - r.json()["data"][itemID]["lowPriceVolume"]),limit])
+				highPriceVolume = r.json()["data"][itemID]["lowPriceVolume"]
+				lowPriceVolume = r.json()["data"][itemID]["lowPriceVolume"]
 
-				self.dataSet.append([score, name])
+				multiplier = (highPriceVolume / lowPriceVolume)*min([highPriceVolume,limit])
+				
+				score *= multiplier
+
+				self.dataSet.append([score, name, highPriceVolume])
 
 			except KeyError:
 				pass
