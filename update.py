@@ -25,7 +25,7 @@ class updater():
 				highPriceVolume = r.json()["data"][itemID]["lowPriceVolume"]
 				lowPriceVolume = r.json()["data"][itemID]["lowPriceVolume"]
 
-				multiplier = (highPriceVolume / lowPriceVolume)*min([highPriceVolume,limit])
+				multiplier = (highPriceVolume / lowPriceVolume)*min([highPriceVolume,limit]) # maybe ln(highpricevolume) would be better so that high values dont skew
 				
 				score *= multiplier
 
