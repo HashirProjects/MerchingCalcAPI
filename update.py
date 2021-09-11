@@ -30,7 +30,7 @@ class updater():
 				
 				score *= multiplier
 
-				self.dataSet.append([score, name, f"high price volume {highPriceVolume}", f"low price volume {lowPriceVolume}"])
+				self.dataSet.append([score, name, highPriceVolume, lowPriceVolume])
 
 			except KeyError:
 				pass
