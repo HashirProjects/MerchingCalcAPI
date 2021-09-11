@@ -6,7 +6,7 @@ class updater():
 	headers = {
 		'User-Agent': 'GE price forcasting project',
 	}
-	URL = "https://prices.runescape.wiki/api/v1/osrs/6h"
+	URL = "https://prices.runescape.wiki/api/v1/osrs/1h"
 	def __init__(self):
 		with open("itemList.txt" , "rb") as f:
 			self.itemList = pickle.load(f)
@@ -26,11 +26,11 @@ class updater():
 				highPriceVolume = r.json()["data"][itemID]["highPriceVolume"]
 				lowPriceVolume = r.json()["data"][itemID]["lowPriceVolume"]
 
-				multiplier = (highPriceVolume / lowPriceVolume)*log(highPriceVolume) # maybe ln(highpricevolume) would be better so that high values dont skew
+				multiplier = min([highPriceVolume,limit]) / lowPriceVolume*log(highPriceVolume) # maybe ln(highpricevolume) would be better so that high values dont skew
 				
 				score *= multiplier
 
-				self.dataSet.append([score, name, highPriceVolume])
+				self.dataSet.append([score, name, f"high price volume {highPriceVolume}", f"low price volume {lowPriceVolume}"])
 
 			except KeyError:
 				pass
