@@ -1,5 +1,6 @@
 import requests
 import pickle
+from numpy import log
 
 class updater():
 	headers = {
@@ -20,12 +21,12 @@ class updater():
 
 			itemID = str(i)
 			try:#filter using the avg low price
-				score = r.json()["data"][itemID]["avgHighPrice"] - r.json()["data"][itemID]["avgLowPrice"]
+				score = (r.json()["data"][itemID]["avgHighPrice"] - r.json()["data"][itemID]["avgLowPrice"])/r.json()["data"][itemID]["avgLowPrice"]
 
-				highPriceVolume = r.json()["data"][itemID]["lowPriceVolume"]
+				highPriceVolume = r.json()["data"][itemID]["highPriceVolume"]
 				lowPriceVolume = r.json()["data"][itemID]["lowPriceVolume"]
 
-				multiplier = (highPriceVolume / lowPriceVolume)*min([highPriceVolume,limit]) # maybe ln(highpricevolume) would be better so that high values dont skew
+				multiplier = (highPriceVolume / lowPriceVolume)*log(highPriceVolume) # maybe ln(highpricevolume) would be better so that high values dont skew
 				
 				score *= multiplier
 
