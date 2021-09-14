@@ -23,12 +23,12 @@ def startUpdateThreads():
 	def targetfuncDB():
 		while True:
 			updateDB()
-			time.sleep(3600)
+			time.sleep(90)
 
 	def targetfuncM():
 		while True:
 			updateM()
-			time.sleep(120)
+			time.sleep(60)
 
 
 	updateDB_thread = threading.Thread(target = targetfuncDB)
